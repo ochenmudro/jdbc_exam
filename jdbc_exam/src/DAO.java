@@ -5,11 +5,11 @@ public interface DAO<T> {
 
     void getAll();
 
-    void get(T var1);
+    void get(T t);
 
-    void add(T var1);
+    void add(T t);
 
-    void update(T var1);
+    void update(T t);
 
-    void delete(int var1);
+    void delete(int id);
 }

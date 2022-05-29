@@ -1,4 +1,3 @@
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,197 +16,168 @@ public class ClientDAO implements DAO<Client> {
     static final String GET_NAME = "SELECT name FROM client WHERE id=?";
     static final String SPENT = "SELECT price FROM product AS p JOIN \"order\" AS o ON p.order_id=o.id AND o.client_id=?";
 
-    public ClientDAO() {
-    }
-
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5455/postgresDB", "user", "admin");
+        return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
     public void getAll() {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("SELECT * FROM client");
+            this.ptmt = this.connection.prepareStatement(GET);
             this.resultSet = this.ptmt.executeQuery();
-
             while (this.resultSet.next()) {
-                PrintStream var10000 = System.out;
-                int var10001 = this.resultSet.getInt("id");
-                var10000.println("ID " + var10001 + ", Name " + this.resultSet.getString("name") + ", Budget " + this.resultSet.getInt("budget"));
+                System.out.println("ID " + this.resultSet.getInt("id") + ", Name " +
+                        this.resultSet.getString("name")
+                        + ", Budget " + this.resultSet.getInt("budget"));
             }
-        } catch (SQLException var10) {
-            var10.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.resultSet != null) {
                     this.resultSet.close();
                 }
-
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var9) {
-                var9.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 
     public void get(Client client) {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("SELECT * FROM client WHERE id=?");
+            this.ptmt = this.connection.prepareStatement(GET_ONE);
             this.resultSet = this.ptmt.executeQuery();
-
             while (this.resultSet.next()) {
-                PrintStream var10000 = System.out;
-                int var10001 = this.resultSet.getInt("id");
-                var10000.println("ID " + var10001 + ", Name " + this.resultSet.getString("name") + ", Budget " + this.resultSet.getInt("budget"));
+                System.out.println("ID " + this.resultSet.getInt("id") + ", Name " +
+                        this.resultSet.getString("name") + ", Budget " + this.resultSet.getInt("budget"));
             }
-        } catch (SQLException var11) {
-            var11.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.resultSet != null) {
                     this.resultSet.close();
                 }
-
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 
     public void add(Client client) {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("INSERT INTO client (name, budget) VALUES (?,?)");
+            this.ptmt = this.connection.prepareStatement(INSERT);
             this.ptmt.setString(1, client.getName());
             this.ptmt.setInt(2, client.getBudget());
             this.ptmt.executeUpdate();
             System.out.println("Data Added Successfully");
-        } catch (SQLException var11) {
-            var11.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 
     public void update(Client client) {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("UPDATE client SET budget=? WHERE name=?");
+            this.ptmt = this.connection.prepareStatement(UPDATE);
             this.ptmt.setInt(1, client.getBudget());
             this.ptmt.setString(2, client.getName());
             this.ptmt.executeUpdate();
             System.out.println("Table Updated Successfully");
-        } catch (SQLException var11) {
-            var11.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 
     public void delete(int id) {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("DELETE FROM client WHERE id=?");
+            this.ptmt = this.connection.prepareStatement(DELETE);
             this.ptmt.setInt(1, id);
             this.ptmt.executeUpdate();
             System.out.println("Data deleted Successfully");
-        } catch (SQLException var11) {
-            var11.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 
     public void spending(int id) {
         try {
             this.connection = this.getConnection();
-            this.ptmt = this.connection.prepareStatement("SELECT name FROM client WHERE id=?");
+            this.ptmt = this.connection.prepareStatement(GET_NAME);
             this.ptmt.setInt(1, id);
             this.resultSet = this.ptmt.executeQuery();
-
             while (this.resultSet.next()) {
                 System.out.println("Name " + this.resultSet.getString("name"));
             }
-
-            this.ptmt = this.connection.prepareStatement("SELECT price FROM product AS p JOIN \"order\" AS o ON p.order_id=o.id AND o.client_id=?");
+            this.ptmt = this.connection.prepareStatement(SPENT);
             this.ptmt.setInt(1, id);
             this.resultSet = this.ptmt.executeQuery();
-
             int spent = 0;
             while (this.resultSet.next())
                 spent += this.resultSet.getInt("price");
             System.out.println("Spent money " + spent);
-        } catch (SQLException var11) {
-            var11.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.ptmt != null) {
                     this.ptmt.close();
                 }
-
                 if (this.connection != null) {
                     this.connection.close();
                 }
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
-
     }
 }
 

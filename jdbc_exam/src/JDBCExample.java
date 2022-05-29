@@ -10,10 +10,10 @@ public class JDBCExample {
         clientDAO.spending(1);
         orderDAO.getExpensive(1);
 
-        Order order=new Order(1, "complect");
-        Order order1=new Order(1, "makeup");
+        Order order = new Order(1, "complect");
+        Order order1 = new Order(1, "makeup");
         orderDAO.update(order);
         orderDAO.add(order1);
-        orderDAO.deleteByClient(1,"makeup");
+        orderDAO.deleteByClient(1, "makeup");
     }
 }

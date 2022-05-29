@@ -28,5 +28,3 @@ public class Client {
         this.budget = budget;
     }
 }
-
-

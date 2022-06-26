@@ -1,3 +1,5 @@
+package com.example.entities;
+
 public class Client {
     private String name;
     private int id;
@@ -6,6 +8,10 @@ public class Client {
     Client(String name, int budget) {
         this.setName(name);
         this.setBudget(budget);
+    }
+
+    public Client(int id) {
+        this.id = id;
     }
 
     public String getName() {

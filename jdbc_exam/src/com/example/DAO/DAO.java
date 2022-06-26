@@ -1,11 +1,13 @@
+package com.example.DAO;
+
 public interface DAO<T> {
-    String DB_URL = "jdbc:postgresql://localhost:5455/postgresDB";
-    String USER = "user";
-    String PASS = "admin";
+
 
     void getAll();
 
     void get(T t);
+
+    void getByID(int id);
 
     void add(T t);
 
